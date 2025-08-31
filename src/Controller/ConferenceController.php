@@ -7,7 +7,6 @@ use App\Entity\Conference;
 use App\Form\CommentType;
 use App\Message\CommentMessage;
 use App\Repository\ConferenceRepository;
-use App\SpamChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use App\Repository\CommentRepository;
@@ -29,12 +28,21 @@ use Twig\Environment;
 
 
     #[Route('/', name: 'homepage')]
-    public function index(Environment $twig, ConferenceRepository $conferenceRepository): Response
+    public function index(ConferenceRepository $conferenceRepository): Response
      {
-        return new Response($twig->render('conference/index.html.twig', [
-            'conferences' => $conferenceRepository->findAll(),
-        ]));
+        return $this->render('conference/index.html.twig', [
+             'conferences' => $conferenceRepository->findAll(),
+        ])->setSharedMaxAge(3600);
      }
+
+    #[Route('/conference_header', name: 'conference_header')]
+    public function conferenceHeader(ConferenceRepository $conferenceRepository): Response
+    {
+        return $this->render('conference/header.html.twig', [
+            'conferences' => $conferenceRepository->findAll(),
+        ])->setSharedMaxAge(3600);
+    }
+
 
     #[Route('/conference/{slug}', name: 'conference')]
     public function show(
