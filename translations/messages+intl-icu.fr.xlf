@@ -37,7 +37,7 @@
         <source>Comment</source>
         <target>Commentaire</target>
       </trans-unit>
-      <trans-unit id="ilFYXWH" resname="Submit">
+      <trans-unit id="ilFYXWK" resname="Submit">
         <source>Submit</source>
         <target>Envoyer</target>
       </trans-unit>
