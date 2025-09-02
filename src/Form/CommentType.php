@@ -19,7 +19,10 @@ class CommentType extends AbstractType
             ->add('author', null, [
                 'label' => 'Your name',
             ])
-            ->add('text')
+            ->add('text',null,[
+                'label' => 'Comment',
+            ],
+            )
             ->add('email', EmailType::class)
             ->add('photo', FileType::class, [
                 'required' => false,
