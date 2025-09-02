@@ -29,9 +29,9 @@
         <source>No comments have been posted yet for this conference.</source>
         <target>Il n'y a pas de commentaire pour cette conférence.</target>
       </trans-unit>
-      <trans-unit id="ilFYXWZ" resname="Your name">
-        <source>Your name</source>
-        <target>Votre nom</target>
+      <trans-unit id="ilFYXWZ" resname="Name">
+        <source>Name</source>
+        <target>Nom</target>
       </trans-unit>
       <trans-unit id="ilFYXWH" resname="Comment">
         <source>Comment</source>
