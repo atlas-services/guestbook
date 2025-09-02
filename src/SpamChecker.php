@@ -9,12 +9,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class SpamChecker
 {
     private $endpoint;
+    private $akismetBlog;
 
     public function __construct(
         private HttpClientInterface $client,
         #[Autowire('%env(AKISMET_KEY)%')] string $akismetKey,
+        #[Autowire('%env(AKISMET_BLOG)%')] string $akismetBlog,
     ) {
         $this->endpoint = sprintf('https://%s.rest.akismet.com/1.1/comment-check', $akismetKey);
+        $this->akismetBlog = $akismetBlog;
     }
 
     /**
@@ -26,7 +29,7 @@ class SpamChecker
     {
         $response = $this->client->request('POST', $this->endpoint, [
             'body' => array_merge($context, [
-                'blog' => 'https://guestbook.atlas-services.fr',
+                'blog' => $this->akismetBlog,
                 'comment_type' => 'comment',
                 'comment_author' => $comment->getAuthor(),
                 'comment_author_email' => $comment->getEmail(),
