@@ -12,6 +12,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
  class SpamCheckerTest extends TestCase
  {
+    const AKISMET_BLOG = 'https://guestbook.atlas-services.fr';
     public function testSpamScoreWithInvalidRequest(): void
      {
         $comment = new Comment();
@@ -19,7 +20,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
         $context = [];
 
         $client = new MockHttpClient([new MockResponse('invalid', ['response_headers' => ['x-akismet-debug-help: Invalid key']])]);
-        $checker = new SpamChecker($client, 'abcde');
+        $checker = new SpamChecker($client, 'abcde', self::AKISMET_BLOG);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to check for spam: invalid (Invalid key).');
@@ -31,7 +32,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
     public function testSpamScore(int $expectedScore, ResponseInterface $response, Comment $comment, array $context)
     {
         $client = new MockHttpClient([$response]);
-        $checker = new SpamChecker($client, 'abcde');
+        $checker = new SpamChecker($client, 'abcde', self::AKISMET_BLOG);
 
         $score = $checker->getSpamScore($comment, $context);
         $this->assertSame($expectedScore, $score);
