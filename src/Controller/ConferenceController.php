@@ -17,7 +17,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Twig\Environment;
 
  final class ConferenceController extends AbstractController
  {
@@ -57,7 +56,6 @@ use Twig\Environment;
          Conference $conference,
          CommentRepository $commentRepository,
          NotifierInterface $notifier,
-         Environment $twig,
          #[Autowire('%photo_dir%')] string $photoDir,
     ): Response {
         $comment = new Comment();
@@ -97,12 +95,12 @@ use Twig\Environment;
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository->getCommentPaginator($conference, $offset);
 
-         return new Response($twig->render('conference/show.html.twig', [
+        return $this->render('conference/show.html.twig', [
             'conference' => $conference,
             'comments' => $paginator,
             'previous' => $offset - CommentRepository::COMMENTS_PER_PAGE,
             'next' => min(count($paginator), $offset + CommentRepository::COMMENTS_PER_PAGE),
-            'comment_form' => $form->createView(),
-         ]));
+            'comment_form' => $form,
+        ]);
      }
  }
